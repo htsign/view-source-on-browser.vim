@@ -1,4 +1,4 @@
-function! s:to_html(...)
+function! s:to_html(...) range
     let colorscheme = execute('colorscheme')->trim()
     if a:0 >= 1
         execute('colorscheme ' .. a:1)
@@ -7,7 +7,7 @@ function! s:to_html(...)
     let number_status = execute('set number?')->trim()
     setlocal nonumber
 
-    %TOhtml
+    execute(printf('%d,%dTOhtml', a:firstline, a:lastline))
     silent /^<style>$/,/<\/style>/s/\%(monospace\)\@=/Consolas, Meiryo, /g
 
     let filepath = $temp .. '/' .. expand('%:t')
@@ -23,4 +23,5 @@ function! s:to_html(...)
     execute('setlocal ' .. number_status)
 endfunction
 
-command! -nargs=? ViewOnIE call s:to_html(<f-args>)
+command! -nargs=? -complete=color -range=%
+    \ ViewOnIE <line1>,<line2>call s:to_html(<f-args>)
