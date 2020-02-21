@@ -7,8 +7,11 @@ function! s:to_html(...) range
     let number_status = execute('set number?')->trim()
     setlocal nonumber
 
+    let fonts = exists('g:vsob#source_fonts')
+        \ ? g:vsob#source_fonts
+        \ : ['Ricty', 'Cica', 'Consolas', 'MeiryoKe', 'YuGothic', 'Meiryo']
     execute(printf('%d,%dTOhtml', a:firstline, a:lastline))
-    silent /^<style>$/,/<\/style>/s/\%(monospace\)\@=/Consolas, Meiryo, /g
+    execute('silent /^<style>$/,/<\/style>/s/\%(monospace\)\@=/' .. fonts->join(', ') .. ', /g')
 
     let filepath = $temp .. '/' .. expand('%:t')
     execute('silent write! ' .. filepath)
