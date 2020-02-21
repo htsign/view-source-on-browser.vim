@@ -8,7 +8,7 @@ function! s:to_html(...)
     setlocal nonumber
 
     %TOhtml
-    silent %s/\%(monospace\)\@=/Consolas, Meiryo, /g
+    silent /^<style>$/,/<\/style>/s/\%(monospace\)\@=/Consolas, Meiryo, /g
 
     let filepath = $temp .. '/' .. expand('%:t')
     execute('silent write! ' .. filepath)
@@ -16,7 +16,7 @@ function! s:to_html(...)
     let browser = exists('g:vsob#browser_path')
         \ ? g:vsob#browser_path
         \ : $ProgramFiles .. '\Internet Explorer\iexplore.exe'
-    execute('silent !"' .. browser .. '" "' .. filepath .. '"')
+    execute(printf('silent !"%s" "%s"', browser, filepath))
     bdelete!
 
     execute('colorscheme ' .. colorscheme)
