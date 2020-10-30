@@ -23,4 +23,4 @@ endfunction
 
 
 command! -nargs=? -complete=color -range=%
-    \ ViewOnIE <line1>,<line2>call s:to_html(<f-args>)
+    \ ViewOnIE <line1>,<line2>call <SID>to_html(<f-args>)
